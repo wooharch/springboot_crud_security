@@ -1,2 +1,2 @@
-# edu11-1
-Spring Data Jdbc ( Full Version )
+# edu12-4
+SpringBoot + JWT + H2
