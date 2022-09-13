@@ -14,7 +14,7 @@ server:
 spring:
   datasource:
     driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:mysql://db:3306/edu
+    url: jdbc:mysql://db:3306/edu?useSSL=false
     username: edu
     password: edu1234
     #password: ENC(hk5/B+52K9XaD+BqzpFaHQ==)
