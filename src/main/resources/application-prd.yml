@@ -14,7 +14,7 @@ server:
 spring:
   datasource:
     driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:h2:mem:testdb;IGNORECASE=TRUE #jdbc:log4jdbc:tibero:thin:@localhost:8640:POCICISORDDB
+    url: jdbc:mariadb://localhost:3306/edu
     username: sa
     password: ENC(hk5/B+52K9XaD+BqzpFaHQ==)
     # h2 DB
