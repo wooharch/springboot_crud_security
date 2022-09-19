@@ -88,7 +88,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    //APPDU
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
@@ -106,7 +105,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/login",
                         "/login",
                         "/h2-console/*"
-                        //"/signin"
                 ).permitAll()
 
                 // all other requests need to be authenticated
