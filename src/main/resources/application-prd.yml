@@ -16,8 +16,8 @@ spring:
     driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:mariadb://db:3306/edu
     username: edu
-    #password: edu1234
-    password: ENC(hk5/B+52K9XaD+BqzpFaHQ==)
+    password: edu1234
+    #password: ENC(hk5/B+52K9XaD+BqzpFaHQ==)
     # h2 DB
     #generate-unique-name: false
     hikari:
