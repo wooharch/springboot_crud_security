@@ -1,7 +1,8 @@
 #
 # Build stage
 #
-FROM  maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+#FROM  maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+FROM  ghcr.io/maven:3.8.4-openjdk-17 AS MAVEN_BUILD
 
 RUN mkdir -p build
 WORKDIR /build
@@ -17,7 +18,8 @@ RUN mvn package
 #
 # production environment
 
-FROM eclipse-temurin:17.0.2_8-jre-alpine
+#FROM eclipse-temurin:17.0.2_8-jre-alpine
+FRONM ghcr.io/shclub/jre17-runtime:v1.0.0
 
 COPY --from=MAVEN_BUILD /build/target/*.jar app.jar
 
