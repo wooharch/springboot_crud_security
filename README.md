@@ -1,2 +1,9 @@
 # edu12-4
-SpringBoot + JWT + H2
+
+***
+
+
+dev : SpringBoot + JWT + H2
+prd : SpringBoot + JWT + MariaDB
+
+***
