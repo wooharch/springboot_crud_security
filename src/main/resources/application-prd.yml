@@ -16,8 +16,8 @@ spring:
 #    init:
 #      platform: mysql
   datasource:
-    #driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    driverClassName: org.mariadb.jdbc.Driver
+    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    #driverClassName: org.mariadb.jdbc.Driver
     url: jdbc:mysql://db:3306/edu
     username: edu
     #password: caravan
