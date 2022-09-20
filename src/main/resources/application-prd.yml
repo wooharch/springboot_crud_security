@@ -13,8 +13,8 @@ server:
       max: 200
 spring:
   datasource:
-    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    #driverClassName: org.mariadb.jdbc.Driver
+    #driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    driverClassName: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://db:3306/edu
     username: edu
     #password: caravan
