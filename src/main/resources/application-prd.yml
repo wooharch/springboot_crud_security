@@ -12,9 +12,12 @@ server:
     threads:
       max: 200
 spring:
+  sql:
+    init:
+      platform: mysql
   datasource:
     driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:mariadb://db:3306/edu
+    url: jdbc:mysql://db:3306/edu
     username: edu
     #password: caravan
     password: ENC(hk5/B+52K9XaD+BqzpFaHQ==)
