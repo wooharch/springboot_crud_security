@@ -34,7 +34,7 @@ public class EmployeeController {
     }
 
     @Operation(summary ="임직원 등록",description="임직원을 등록합니다.")
-    @PostMapping("/employees")
+    @PostMapping("/employee")
     public ResponseEntity<EmployeeEntity> create(@RequestBody EmployeeEntity employeeEntity) {
         EmployeeEntity createdEntity = employeeService.create(employeeEntity);
         return ResponseEntity.ok(createdEntity);
