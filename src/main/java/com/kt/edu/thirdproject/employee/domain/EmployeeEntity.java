@@ -14,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table("employee")
+@Table("EMPLOYEE")
 @Schema(description = "employee Entity")
 //json 에서 해당 값 제외
 @JsonIgnoreProperties({"new"})
