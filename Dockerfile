@@ -2,7 +2,7 @@
 # Build stage
 #
 #FROM  maven:3.8.4-openjdk-17 AS MAVEN_BUILD
-FROM  ghcr.io/shclub/maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+#FROM  ghcr.io/shclub/maven:3.8.4-openjdk-17 AS MAVEN_BUILD
 
 RUN mkdir -p build
 WORKDIR /build
@@ -11,7 +11,9 @@ COPY pom.xml ./
 COPY src ./src
 
 COPY . ./
-RUN mvn clean install -DskipTests
+#RUN mvn clean install -DskipTests
+
+RUN ./mvnw clean package -DskipTests
 
 #
 # Package stage
