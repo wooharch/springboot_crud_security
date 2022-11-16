@@ -3,7 +3,7 @@
 ***
 
 
-dev : SpringBoot + JWT + H2  
+local : SpringBoot + JWT + H2  
 
 <br/>
 
