@@ -1,19 +1,34 @@
 #
 # Build stage
 #
-#FROM  maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+# FROM  maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+
+#### 1) Maven build
 #FROM  ghcr.io/shclub/maven:3.8.4-openjdk-17 AS MAVEN_BUILD
+
+#RUN mkdir -p build
+#WORKDIR /build
+
+#COPY pom.xml ./
+#COPY src ./src
+
+#COPY . ./
+
+#RUN mvn clean install -DskipTests
+
+## 2)  Maven Wrapper Build
+
+FROM openjdk:17-alpine AS MAVEN_BUILD
 
 RUN mkdir -p build
 WORKDIR /build
 
 COPY pom.xml ./
-COPY src ./src
-
+COPY src ./src                             
+COPY mvnw ./         
 COPY . ./
-#RUN mvn clean install -DskipTests
 
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -Dmaven.test.skip=true
 
 #
 # Package stage
