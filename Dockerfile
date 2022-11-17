@@ -17,7 +17,7 @@
 
 ## 2)  Maven Wrapper Build
 
-FROM ghcr.io/shclub/openjdk:17-alpine AS MAVEN_BUILD
+FROM shclub/openjdk:17-alpine AS MAVEN_BUILD
 
 RUN mkdir -p build
 WORKDIR /build
@@ -35,7 +35,7 @@ RUN ./mvnw clean package -Dmaven.test.skip=true
 # production environment
 
 #FROM eclipse-temurin:17.0.2_8-jre-alpine
-FROM ghcr.io/shclub/jre17-runtime:v1.0.0
+FROM shclub/jre17-runtime:v1.0.0
 
 COPY --from=MAVEN_BUILD /build/target/*.jar app.jar
 
