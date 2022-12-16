@@ -31,9 +31,9 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: "Route Name"
+        description: "Service Name"
         required: true
-        default: edu12-4
+        default: backend
 
 jobs:
 
