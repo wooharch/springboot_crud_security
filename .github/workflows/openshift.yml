@@ -120,11 +120,11 @@ jobs:
         image: "ghcr.io/shclub/edu12-4:v10" # ${{ steps.push-image.outputs.registry-path }}
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
         port: ${{ env.APP_PORT }}
-        build_env: |
-          SPRING_PROFILES_ACTIVE=dev
-          SPRING_DATASOURCE_USERNAME=edu
-          SPRING_DATASOURCE_PASSWORD=caravan
-          SPRING_DATASOURCE_URL=jdbc:mariadb://helm-db-mariadb:3306/edu
+        #build_env: |
+        #  SPRING_PROFILES_ACTIVE=dev
+        #  SPRING_DATASOURCE_USERNAME=edu
+        #  SPRING_DATASOURCE_PASSWORD=caravan
+        #  SPRING_DATASOURCE_URL=jdbc:mariadb://helm-db-mariadb:3306/edu
     - name: Print application URL
       env:
         ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
