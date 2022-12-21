@@ -112,13 +112,13 @@ jobs:
        
     - name: Delete all object in namespace
       run: |
-       echo "kubectl delete all --selector=app=frontend"
-       kubectl delete all --selector=app=frontend
+       echo "kubectl delete all --selector=app=backend"
+       kubectl delete all --selector=app=backend
        
     
     - name: Apply yaml in namespace
       run: |
-       echo "kubectl delete all --selector=app=frontend"
+       echo "kubectl delete all --selector=app=backend"
        kubectl apply -f ./manifest.yaml
                  
         
