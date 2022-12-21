@@ -1,4 +1,4 @@
-name: OpenShift
+name: k8s_on_OpenShift
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
