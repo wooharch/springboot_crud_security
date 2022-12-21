@@ -9,6 +9,7 @@ public class QueryEmployeeSqls {
     
     @Value("${spring.profiles.active:}") 
     private String activeProfile;
+    
     if activeProfile.equals("prd"){ // maria, mysql
        hibernate_nextval = "SELECT NEXTVAL(hibernate_sequence)";
     } else { // h2 db
@@ -21,5 +22,5 @@ public class QueryEmployeeSqls {
            """;
     */
     
-    public static final String RETV_NEXT_VAL=hibernate_nextval;
+    public static final String RETV_NEXT_VAL = hibernate_nextval;
 }
