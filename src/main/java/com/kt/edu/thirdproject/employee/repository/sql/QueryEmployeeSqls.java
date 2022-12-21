@@ -1,5 +1,7 @@
 package com.kt.edu.thirdproject.employee.repository.sql;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class QueryEmployeeSqls {
 
     // h2 db
