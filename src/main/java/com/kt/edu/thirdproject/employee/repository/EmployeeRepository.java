@@ -12,4 +12,7 @@ public interface EmployeeRepository extends CrudRepository<EmployeeEntity, Long>
     @Query(QueryEmployeeSqls.RETV_NEXT_VAL)
     Long retvNextVal();
 
+    @Query(QueryEmployeeSqls.RETV_NEXT_VAL_H2)
+    Long retvNextVal_H2();
+    
 }
