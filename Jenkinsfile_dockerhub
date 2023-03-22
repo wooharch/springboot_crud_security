@@ -32,7 +32,7 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
                 sh  """
                      ./mvnw clean package jib:build  -Dmaven.test.skip=true  \
                      -Djib.from.image=ghcr.io/shclub/jre17-runtime:v1.0.0 \
-                     -Djib.to.image=${imageName} \
+                     -Djib.to.image=${imageName} + ${TAG}  \
                      -Djib.to.auth.username=shclub \
                      -Djib.to.auth.password=shcl@#2390
                      echo 'TAG ==========> ' ${TAG}
