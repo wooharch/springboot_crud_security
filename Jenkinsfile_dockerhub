@@ -1,13 +1,13 @@
 def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
-def imageName = "shclub/edu1"
+def imageName = "shclub/edu12-4"
 
 def TAG = getTag(gitBranch)
 
 podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
     containers: [
-        containerTemplate(name: 'podman', image: 'mattermost/podman:1.8.0', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
+        containerTemplate(name: 'build-tools', image: 'ghcr.io/shclub/build-tool:v1.0.0', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
         ,containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
     ],
     volumes: [
@@ -20,28 +20,44 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
        stage('Clone Git Project') {
             sh "pwd"
             echo 'Clone'
-            git branch: 'master', credentialsId: 'github_ci', url: 'https://github.com/shclub/edu1.git'
+            git branch: 'master', credentialsId: 'github_ci', url: 'https://github.com/shclub/edu12-4.git'
             sh "ls"
         }
-                             // podman login -u ${USERNAME} -p ${PASSWORD} --log-level=debug ${docker_registry} --tls-verify=false
 
-        stage('Build with Podman') {
-                container('podman') {
-                  withCredentials([usernamePassword(credentialsId: 'docker_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
-                     sh  """
-                     ls -al /etc/containers
-                     podman login -u ${USERNAME} -p ${PASSWORD} --log-level=debug ${docker_registry}  --tls-verify=false
-                     podman build -t ${imageName} --cgroup-manager=cgroupfs --tls-verify=false .
-                     podman push ${imageName} --tls-verify=false
-                     echo 'TAG ==========> ' ${imageName}
-                     """
+      stage('Maven Build & Image Push ') {
+            container('build-tools') {
+                sh  """
+                     mvn clean package jib:build -DskipTests  \
+                     -Djib.from.image=ghcr.io/shclub/jre17-runtime:v1.0.0 \
+                     -Djib.from.auth.username=shclub \
+                     -Djib.from.auth.password=New1234! \
+                     -Djib.to.image=shclub/edu12-4 \
+                     -Djib.to.tags=${TAG} \
+                     -Djib.to.auth.username=edu \
+                     -Djib.to.auth.password=New1234!
+                     echo 'TAG ==========> ' ${TAG}
+               """
+            }
+        }
 
-                  }
-              }
+        stage('GitOps update') {
+            container('build-tools') {
+                sh """  
+                    git clone https://shclub:${G_GIT_TOKEN}@github.com/shclub/edu13-gitops.git
+                    cd edu12-4/kustomize
+                    git checkout HEAD
+                    kustomize edit set image shclub/edu12-4:${TAG}
+                    git config --global user.email "shclub@gmail.com"
+                    git config --global user.name "shclub"
+                    git add .
+                    git commit -am 'update image tag  ${TAG} from My_Jenkins'
+                    cat kustomization.yaml
+                    git push origin HEAD
+                """
+            }
         }
 
     }
-
 }
 
 def getTag(branchName){     
