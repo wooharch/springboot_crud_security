@@ -2,6 +2,7 @@ def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
 def imageName = "shclub/edu12-4"
+def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
 
 def TAG = getTag(gitBranch)
 
@@ -31,34 +32,37 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
                      
       stage('Maven Build & Image Push ') {
             container('build-tools') {
-                sh  """
-                     ./mvnw clean package jib:build  -Dmaven.test.skip=true  \
-                     -Djib.from.image=ghcr.io/shclub/jre17-runtime:v1.0.0 \
-                     -Djib.to.image=${imageName} \
-                     -Djib.to.tags=${TAG}  \
-                     -Djib.to.auth.username=shclub \
-                     -Djib.to.auth.password=shcl@#2390
-                     echo 'TAG ==========> ' ${TAG}
-               """
+               withCredentials([usernamePassword(credentialsId: 'docker_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
+                    sh  """
+                         ./mvnw clean package jib:build  -Dmaven.test.skip=true  \
+                         -Djib.from.image=${fromImage} \
+                         -Djib.to.image=${imageName} \
+                         -Djib.to.tags=${TAG}  \
+                         -Djib.to.auth.username=${USERNAME} \
+                         -Djib.to.auth.password=${PASSWORD}
+                         echo 'TAG ==========> ' ${TAG}
+                   """
+              }
             }
         }
 
-       /* stage('GitOps update') {
+        stage('GitOps update') {
             container('build-tools') {
-                sh """  
-                    git clone https://shclub:${G_GIT_TOKEN}@github.com/shclub/edu13-gitops.git
-                    cd edu12-4/kustomize
-                    git checkout HEAD
-                    kustomize edit set image shclub/edu12-4:${TAG}
-                    git config --global user.email "shclub@gmail.com"
-                    git config --global user.name "shclub"
-                    git add .
-                    git commit -am 'update image tag  ${TAG} from My_Jenkins'
-                    cat kustomization.yaml
-                    git push origin HEAD
-                """
+               withCredentials([usernamePassword(credentialsId: 'github_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
+                    sh """  
+                        git clone https://shclub:${PASSWORD}@github.com/shclub/edu13-gitops.git
+                        git checkout HEAD
+                        kustomize edit set image ${imageName}:${TAG}
+                        git config --global user.email "shclub@gmail.com"
+                        git config --global user.name "shclub"
+                        git add .
+                        git commit -am 'update image tag  ${TAG} from My_Jenkins'
+                        cat kustomization.yaml
+                        git push origin HEAD
+                    """
+               } 
             }
-        }*/
+        }
 
     }
 }
