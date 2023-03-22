@@ -37,6 +37,8 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
                     sh  """
                          ./mvnw clean package jib:build  -Dmaven.test.skip=true  \
                          -Djib.from.image=${fromImage} \
+                         -Djib.from.auth.username=${USERNAME} \
+                         -Djib.from.auth.password=${PASSWORD} \
                          -Djib.to.image=${imageName} \
                          -Djib.to.tags=${TAG}  \
                          -Djib.to.auth.username=${USERNAME} \
