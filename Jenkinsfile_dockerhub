@@ -1,8 +1,9 @@
 def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
-def imageName = "shclub/edu12-4"
+def imageName = "shclub/edu12-backend"
 def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
+def git_ops_name = "edu12-gitops"
 
 def TAG = getTag(gitBranch)
 
@@ -26,9 +27,7 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
             sh "ls"
         }
 
-                     // -Djib.from.auth.username=shclub \
-                     // -Djib.from.auth.password=New1234! \
-                     // -Djib.allowInsecureRegistries=true
+  // -Djib.allowInsecureRegistries=true
                      
       stage('Maven Build & Image Push ') {
             container('build-tools') {
@@ -51,12 +50,12 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
                withCredentials([usernamePassword(credentialsId: 'github_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
                     sh """  
                         cd ~
-                        git clone https://shclub:${PASSWORD}@github.com/shclub/edu13-gitops.git
-                        cd edu13-gitops
+                        git clone https://${USERNAME}:${PASSWORD}@github.com/${USERNAME}/${git_ops_name}
+                        cd ${git_ops_name}
                         git checkout HEAD
                         kustomize edit set image ${imageName}:${TAG}
                         git config --global user.email "shclub@gmail.com"
-                        git config --global user.name "shclub"
+                        git config --global user.name ${USERNAME}
                         git add .
                         git commit -am 'update image tag  ${TAG} from My_Jenkins'
                         cat kustomization.yaml
