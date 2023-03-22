@@ -2,7 +2,7 @@ def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
 def imageName = "shclub/edu12-backend"
-def fromImage = "ghcr.io/shclub/jre17-runtime1:v1.0.0"
+def fromImage = "ghcr.io/shclub/jre17-runtime1:sha256-2f264b6315f792571b3fb5f9ae183ef43b14525673154c26e042fc8c9b64e336.sig"
 def git_ops_name = "edu12-backend-gitops"
 def P_NAMESPACE = "edu30"
 
