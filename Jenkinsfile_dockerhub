@@ -50,7 +50,9 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
             container('build-tools') {
                withCredentials([usernamePassword(credentialsId: 'github_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
                     sh """  
+                        cd ~
                         git clone https://shclub:${PASSWORD}@github.com/shclub/edu13-gitops.git
+                        cd ./${GIT_OPS_NAME}
                         git checkout HEAD
                         kustomize edit set image ${imageName}:${TAG}
                         git config --global user.email "shclub@gmail.com"
