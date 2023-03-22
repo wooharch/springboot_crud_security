@@ -11,7 +11,7 @@ def TAG = getTag(gitBranch)
 podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPACE,
     containers: [
         containerTemplate(name: 'build-tools', image: 'ghcr.io/shclub/build-tool:v1.0.0', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
-        ,containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
+        ,containerTemplate(name: 'jnlp', image: 'ghcr.io/shclub/jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
     ],
     volumes: [
         hostPathVolume(hostPath: '/etc/containers' , mountPath: '/var/lib/containers' ),
@@ -27,10 +27,8 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
             git branch: 'master', credentialsId: 'github_ci', url: 'https://github.com/shclub/edu12-4.git'
             sh "ls"
         }
-                         //./mvnw clean package jib:build  -Dmaven.test.skip=true  \
-                                   //                mvn clean package jib:build  -DskipTests  \
-
-
+  //./mvnw clean package jib:build  -Dmaven.test.skip=true  \
+  //                mvn clean package jib:build  -DskipTests  \
   // -Djib.allowInsecureRegistries=true
                      
       stage('Maven Build & Image Push ') {
