@@ -24,23 +24,24 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
             sh "ls"
         }
 
+                     // -Djib.from.auth.username=shclub \
+                     // -Djib.from.auth.password=New1234! \
+                     
       stage('Maven Build & Image Push ') {
             container('build-tools') {
                 sh  """
                      mvn clean package jib:build -DskipTests  \
                      -Djib.from.image=ghcr.io/shclub/jre17-runtime:v1.0.0 \
-                     -Djib.from.auth.username=shclub \
-                     -Djib.from.auth.password=New1234! \
                      -Djib.to.image=shclub/edu12-4 \
                      -Djib.to.tags=${TAG} \
-                     -Djib.to.auth.username=edu \
-                     -Djib.to.auth.password=New1234!
+                     -Djib.to.auth.username=shclub \
+                     -Djib.to.auth.password=shcl@#2390
                      echo 'TAG ==========> ' ${TAG}
                """
             }
         }
 
-        stage('GitOps update') {
+       /* stage('GitOps update') {
             container('build-tools') {
                 sh """  
                     git clone https://shclub:${G_GIT_TOKEN}@github.com/shclub/edu13-gitops.git
@@ -55,7 +56,7 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
                     git push origin HEAD
                 """
             }
-        }
+        }*/
 
     }
 }
