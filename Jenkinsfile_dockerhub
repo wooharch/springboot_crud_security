@@ -52,7 +52,7 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
                     sh """  
                         cd ~
                         git clone https://shclub:${PASSWORD}@github.com/shclub/edu13-gitops.git
-                        cd ./${GIT_OPS_NAME}
+                        cd edu13-gitops
                         git checkout HEAD
                         kustomize edit set image ${imageName}:${TAG}
                         git config --global user.email "shclub@gmail.com"
