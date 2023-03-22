@@ -2,7 +2,7 @@ def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
 def imageName = "shclub/edu12-backend"
-def fromImage = "ghcr.io/shclub/jre17-runtime1:v1.0.0"
+def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
 def git_ops_name = "edu12-backend-gitops"
 def P_NAMESPACE = "edu30"
 
@@ -28,14 +28,16 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
             sh "ls"
         }
                          //./mvnw clean package jib:build  -Dmaven.test.skip=true  \
+                                   //                mvn clean package jib:build  -DskipTests  \
+
 
   // -Djib.allowInsecureRegistries=true
                      
       stage('Maven Build & Image Push ') {
             container('build-tools') {
-               withCredentials([usernamePassword(credentialsId: 'docker_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
+               withCredentials([usernamePassword(credentialsId: 'github_ci',usernameVariable: 'USERNAME',passwordVariable: 'PASSWORD')]) {
                     sh  """
-                          mvn clean package jib:build  -DskipTests  \
+                         ./mvnw clean package jib:build  -Dmaven.test.skip=true  \
                          -Djib.from.image=${fromImage} \
                          -Djib.to.image=${imageName} \
                          -Djib.to.tags=${TAG}  \
