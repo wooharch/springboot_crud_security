@@ -4,10 +4,11 @@ def docker_registry = "docker.io"
 def imageName = "shclub/edu12-backend"
 def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
 def git_ops_name = "edu12-backend-gitops"
+def P_NAMESPACE = "edu30"
 
 def TAG = getTag(gitBranch)
 
-podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: 'edu30',
+podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPACE,
     containers: [
         containerTemplate(name: 'build-tools', image: 'ghcr.io/shclub/build-tool:v1.0.0', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
         ,containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
