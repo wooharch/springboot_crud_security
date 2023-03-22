@@ -3,7 +3,7 @@ def gitBranch = 'master'
 def docker_registry = "docker.io"  
 def imageName = "shclub/edu12-backend"
 def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
-def git_ops_name = "edu12-gitops"
+def git_ops_name = "edu12-backend-gitops"
 
 def TAG = getTag(gitBranch)
 
