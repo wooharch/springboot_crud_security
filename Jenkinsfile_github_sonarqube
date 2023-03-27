@@ -33,19 +33,17 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
            }  
         }
         
-         //stage('SonarQube Analysis') {
-            //steps{
-                //withSonarQubeEnv('sonarqube_local'){ // 시스템설정 값
-               //     sh "mvn clean package"
-             //       sh "mvn sonar:sonar -Dsonar.projectKey=jenkins_prj -Dsonar.host.url=http://localhost:9000 -Dsonar.login=61344cd942bff25b06f56a8b0d6768xxxxxxxx"
-           //     }
-         //   }
+       //stage('SonarQube Analysis') {
+       //steps{
+       //withSonarQubeEnv('sonarqube_local'){ // 시스템설정 값
+       //     sh "mvn clean package"
+       //       sh "mvn sonar:sonar -Dsonar.projectKey=jenkins_prj -Dsonar.host.url=http://localhost:9000 -Dsonar.login=61344cd942bff25b06f56a8b0d6768xxxxxxxx"
+       //     }
+       //   }
        // }
         
         
         
-
-
     }
 }
 
