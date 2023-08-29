@@ -43,8 +43,9 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-          image-ref: '${{ github.repository }}:${{ github.event.inputs.tags }}'
-          #image-ref: 'docker.io/shclub/edu12-4:master'
+          #image-ref: '${{ github.repository }}:${{ github.event.inputs.tags }}'
+          #image-ref: '${{ github.repository }}:master'
+          image-ref: 'docker.io/shclub/edu12-4:master'
           format: 'sarif'
           output: 'trivy-results.sarif'
 
