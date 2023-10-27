@@ -22,14 +22,6 @@ spring:
 #      client:
 #        url: http://localhost:8080
 
-# prometheus  포맷으로 expose
-management:  
-  endpoints:  
-    prometheus:  
-      enabled: true  
-    web:  
-      exposure:  
-        include: prometheus
 # logging
 logging:
   config: classpath:log4j2.xml
