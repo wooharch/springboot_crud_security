@@ -161,11 +161,11 @@
 		</dependency>
 
 	         <!-- https://mvnrepository.com/artifact/co.elastic.apm/elastic-apm-agent -->
-		<!--dependency>
+		<dependency>
 		    <groupId>co.elastic.apm</groupId>
 		    <artifactId>elastic-apm-agent</artifactId>
 		    <version>1.43.0</version>
-		</dependency-->	
+		</dependency>	
 	</dependencies>
 
 	<build>
