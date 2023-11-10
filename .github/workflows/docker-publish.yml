@@ -1,3 +1,5 @@
+name: Publish Github
+
 on:      
   workflow_dispatch:
     inputs:
