@@ -1,7 +1,8 @@
 package com.kt.edu.thirdproject.common.config;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 
 public class RequestBodyFilter implements Filter {
