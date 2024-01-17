@@ -9,6 +9,6 @@ public class QueryEmployeeSqls {
            """;
     //profile is local,dev ( h2 )
     public static final String RETV_NEXT_VAL_H2="""
-    SELECT hibernate_sequence.nextval FROM  dual;    
+    select nextval ('hibernate_sequence');    
            """;
 }

@@ -37,16 +37,16 @@ jwt:
 # app
 app-info:
   app-name: "edu-spring-data-jdbc"
-  title: "Caravan Edu API"
+  title: "Cloud Native Edu API"
   build:
     version: '@project.version@'
     timestamp: '@app.build.timestamp@'
-  user-id: "jakelee"
-  org-id: "my-home"
+  user-id: "jake lee"
+  org-id: "KT"
   desc: "EDU 관련 설명입니다."
-  doc-url: "https://github.com/shclub/edu/"
+  doc-url: "https://github.com/kt-cloudnative/education/"
   license: "Apache License"
-  license_url: "https://github.com/shclub/edu/"
+  license_url: "https://github.com/kt-cloudnative/education/"
   version: "@app.build.timestamp@"
-  doc-desc: "기타정보"
+  doc-desc: "교육용"
 

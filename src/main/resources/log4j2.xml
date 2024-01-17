@@ -2,7 +2,7 @@
 <Configuration status="INFO">
 
     <Properties>
-        <Property name="logFileName">edu12-4</Property>
+        <Property name="logFileName">SPRINGBOOT_SECURITY</Property>
         <!-- 디폴트 로깅시-->
         <Property name="consoleLayout">${logFileName} %d{HH:mm:ss.SSS} %-5level %c : - %enc{%msg}{CRLF} %n%throwable</Property>
         <!-- <Property name="consoleLayout">${logFileName} %style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: - %msg%n%throwable</Property> -->

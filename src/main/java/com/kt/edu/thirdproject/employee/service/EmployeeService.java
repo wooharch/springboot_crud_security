@@ -6,12 +6,9 @@ import com.kt.edu.thirdproject.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class EmployeeService {
 
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     // spring profile
@@ -30,11 +28,11 @@ public class EmployeeService {
     @Value("${spring.datasource.password}")
     private String h2Password;
 
-    @Autowired
-    public EmployeeService(RestTemplateBuilder restTemplateBuilder, EmployeeRepository employeeRepository){
+    /*@Autowired
+    public EmployeeService(EmployeeRepository employeeRepository){
         this.employeeRepository = employeeRepository;
 
-    }
+    }*/
     public List<EmployeeEntity> getEmployeeList() {
         log.info("Request to get all Employees");
         log.info("h2 password : " + h2Password );
