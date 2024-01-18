@@ -29,9 +29,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//imsi
-    //@Autowired
-    //private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
     private UserDetailsService jwtUserDetailsService;
@@ -53,20 +50,6 @@ public class SecurityConfig {
         return new Sha256PasswordEncoder(); // default 대신 SHA256 Encoder 사용함
     }
 
-    //imsi
-/*
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }*/
-    // OTP, Captcha 가 있으면 custom 생성
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthentictionProvider);
-    }*/
-
-
     // ️ CORS 설정
     CorsConfigurationSource corsConfigurationSource() {
         return request -> {
@@ -75,7 +58,7 @@ public class SecurityConfig {
             config.setAllowedMethods(Collections.singletonList("*"));
             //config.setAllowedMethods(Collections.singletonList("GET"));
             //config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); //  허용할 origin
-            config.setAllowedOriginPatterns(Collections.singletonList("*")); // ⭐ 허용할 origin
+            config.setAllowedOriginPatterns(Collections.singletonList("*")); //  허용할 origin
             config.setAllowCredentials(true);
             return config;
         };
@@ -121,8 +104,6 @@ public class SecurityConfig {
         http.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-       // http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }
