@@ -19,6 +19,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -62,9 +66,25 @@ public class SecurityConfig {
         auth.authenticationProvider(customAuthentictionProvider);
     }*/
 
+
+    // ️ CORS 설정
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            //config.setAllowedMethods(Collections.singletonList("GET"));
+            //config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); //  허용할 origin
+            config.setAllowedOriginPatterns(Collections.singletonList("*")); // ⭐ 허용할 origin
+            config.setAllowCredentials(true);
+            return config;
+        };
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(Customizer.withDefaults());
         http
@@ -91,13 +111,11 @@ public class SecurityConfig {
                 .headers(
                 headersConfigurer ->
                         headersConfigurer
-                                .frameOptions(
+                                .frameOptions( // multi login 시 IFRAME 사용 가능하도록
                                         HeadersConfigurer.FrameOptionsConfig::sameOrigin
                                 )
         );
 
-        // multi login 시 IFRAME 사용 가능하도록
-        //httpSecurity.headers().frameOptions().sameOrigin();
 
         // Add a filter to validate the tokens with every request
         http.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
