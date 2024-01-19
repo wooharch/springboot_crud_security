@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import com.kt.edu.thirdproject.common.service.JwtUserDetailsService;
 import com.kt.edu.thirdproject.common.util.JwtTokenUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -29,17 +31,32 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                     HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
+        log.info("JWT Start");
 
         String username = null;
         String jwtToken = null;
+
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+
+            try {
+                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                log.debug("UserName:{} Token expiration = {}", username, jwtTokenUtil.getExpirationDateFromToken(jwtToken));
+            } catch (IllegalArgumentException e) {
+                log.error("UserName:{} JWT Token을 획득할 수 없습니다.", username);
+            } catch (ExpiredJwtException e) {
+                log.error("UserName:{} DateTime:{} JWT Token이 만료 되었습니다.", e.getClaims().getSubject(), e.getClaims().getExpiration());
+            } catch (Exception e) {
+                log.error("UserName:{} JWT Token 획득시 오류가 발생 되었습니다.", username);
+            }
+        }
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        /*if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -50,7 +67,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
-        }
+        }*/
 
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -71,6 +88,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-        filterChain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 }
