@@ -18,7 +18,7 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private final EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     //@Cacheable(cacheNames = "employee")
     @GetMapping("/employees")
