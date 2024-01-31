@@ -12,13 +12,13 @@ import java.util.List;
 
 @Tag(name = "posts", description = "Employee API")
 @RestController
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 @CrossOrigin(origins ="*")
 @RequestMapping("/api/v1/")
 public class EmployeeController {
 
+    @Autowired
     private final EmployeeService employeeService;
-
 
     //@Cacheable(cacheNames = "employee")
     @GetMapping("/employees")
