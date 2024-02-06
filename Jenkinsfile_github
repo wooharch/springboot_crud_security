@@ -3,23 +3,24 @@ def gitBranch = 'master'
 def docker_registry = "ghcr.io"  
 
 // 본인 이미지 사용
-def imageName = "ghcr.io/shclub/edu12-backend"
+def imageName = "ghcr.io/kt-cloudnative/springboot_crud_security"
+def git_ops_name = "backend-gitops-kust"
+
 def fromImage = "ghcr.io/shclub/jre17-runtime:v1.0.0"
-def git_ops_name = "edu12-backend-gitops"
+
 // 본인 Namespace
-def P_NAMESPACE = "edu30"
+def P_NAMESPACE = "devops"
 // 본인 slave pvc
 def P_SLAVE_PVC = "jenkins-edu-slave-pvc"
 // 본인 이메일
 def P_EMAIL = "shclub@gmail.com"
-
 
 def TAG = getTag(gitBranch)
 
 podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPACE,
     containers: [
         containerTemplate(name: 'build-tools', image: 'ghcr.io/shclub/build-tool:v1.0.0', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
-        ,containerTemplate(name: 'jnlp', image: 'ghcr.io/shclub/jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
+        ,containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest', args: '${computer.jnlpmac} ${computer.name}')
     ],
     volumes: [
         hostPathVolume(hostPath: '/etc/containers' , mountPath: '/var/lib/containers' ),
