@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "posts", description = "Employee API")
+@Tag(name = "Employee", description = "Employee API")
 @RestController
 //@RequiredArgsConstructor
 @CrossOrigin(origins ="*")
