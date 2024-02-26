@@ -33,10 +33,6 @@ spring:
         
 # spring boot - actuator expose
 management:
-  prometheus:
-    metrics:
-      export:
-        enabled: true
   endpoints:
     health:
       show-details: always
