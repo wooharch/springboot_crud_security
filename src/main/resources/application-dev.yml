@@ -44,14 +44,19 @@ management:
   endpoints:
     health:
       show-details: always
-    loggers:
       enabled: true
+    loggers:
+      enabled: true  
     prometheus:
       enabled: true
     web:
       exposure:
         include: health,prometheus,loggers,metrics,caches,beans
-#        include: "*"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        
 
 springdoc:
   swagger-ui:
