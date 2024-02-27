@@ -30,6 +30,22 @@ spring:
 #        prepStmtCacheSqlLimit: 2048
 #        useServerPrepStmts: true
 
+# spring boot - actuator expose
+management:
+  endpoints:
+    health:
+      show-details: always
+      enabled: true
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: health,prometheus,metrics,caches,beans
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        
 springdoc:
   swagger-ui:
     operations-sorter: alpha
