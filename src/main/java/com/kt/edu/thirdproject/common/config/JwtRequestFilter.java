@@ -35,7 +35,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
-        log.info("JWT Start");
 
         String username = null;
         String jwtToken = null;
@@ -53,6 +52,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 log.error("UserName:{} JWT Token 획득시 오류가 발생 되었습니다.", username);
             }
+        }else {
+            logger.warn("JWT Token does not begin with Bearer String");
         }
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
