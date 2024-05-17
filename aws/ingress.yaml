@@ -3,11 +3,12 @@ kind: Ingress
 metadata:
   name: backend-ingress
   annotations:
-    kubernetes.io/ingress.class: alb
+    kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/load-balancer-name: test-lb
     alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/group.name: shared-alb
 spec:
+  ingressClassName: alb
   rules:
   - http:
       paths:
