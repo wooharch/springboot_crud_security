@@ -97,7 +97,7 @@ jobs:
           sed -i.bak "s|DOCKER_IMAGE|${{ steps.meta.outputs.tags }}|g" aws/deployment.yaml && \
           kubectl delete -f aws/deployment.yaml -n simple
           kubectl delete -f aws/service.yaml -n simple
-          kubectl deletew -f aws/ingress.yaml -n simple
+          kubectl delete -f aws/ingress.yaml -n simple
           kubectl apply -f aws/deployment.yaml -n simple
           kubectl apply -f aws/service.yaml -n simple
           kubectl apply -f aws/ingress.yaml -n simple
