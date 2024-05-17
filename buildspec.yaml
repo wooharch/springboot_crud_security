@@ -17,15 +17,16 @@ phases:
       - IMAGE_REPO_NAME=backend
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
-	  - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
 #      - docker build -t $REPOSITORY_URI:latest .
 #      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
-	  - DATE=`date`
+      - DATE=`date`
       - echo Build completed on $DATE
-      - sed -i.bak 's#AWS_ECR_URI#'"$AWS_ECR_URI"'#' ./deployment.yaml
-      - sed -i.bak 's#DATE_STRING#'"$DATE"'#' ./deployment.yaml
+      - sed -i.bak "s|DOCKER_IMAGE|$REPOSITORY_URI:$IMAGE_TAG|g" ./aws/deployment.yaml
+#      - sed -i.bak 's#AWS_ECR_URI#'"$AWS_ECR_URI"'#' ./deployment.yaml
+#      - sed -i.bak 's#DATE_STRING#'"$DATE"'#' ./deployment.yaml
       - kubectl apply -f ./aws/deployment.yaml
       - kubectl apply -f ./aws/service.yaml
       - kubectl apply -f ./aws/ingress.yaml
