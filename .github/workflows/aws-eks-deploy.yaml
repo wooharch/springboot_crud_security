@@ -10,11 +10,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   AWS_REGION: ap-northeast-2
-  #ECR_REGISTRY: 357535904450.dkr.ecr.ap-northeast-2.amazonaws.com # ecr_registry 주소
-  #ECR_REPOSITORY: ${{ github.event.repository.name  }} # owner  없이 # ${{ github.repository }} # repo 주소 전체
   EKS_CLUSTER_NAME: MVP-EKS-CLUSTER
 
 jobs:
@@ -91,20 +88,16 @@ jobs:
         with:
           # Desired timezone for Linux
           timezoneLinux: Asia/Seoul
-        
-      #- name: set env  # TAG 를 현재 시간으로 설정
-      #  run: echo "NOW=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
   
       - name: Deploy to EKS
-     #   env:
-     #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
-     #     IMAGE_TAG: ${{ steps.commit.outputs.short }}
-     #           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" aws/deployment.yaml && \
         run: |
           sed -i.bak "s|DOCKER_IMAGE|${{ steps.meta.outputs.tags }}|g" aws/deployment.yaml && \
+          kubectl delete -f aws/deployment.yaml -n simple
+          kubectl delete -f aws/service.yaml -n simple
+          kubectl deletew -f aws/ingress.yaml -n simple
           kubectl apply -f aws/deployment.yaml -n simple
           kubectl apply -f aws/service.yaml -n simple
           kubectl apply -f aws/ingress.yaml -n simple
