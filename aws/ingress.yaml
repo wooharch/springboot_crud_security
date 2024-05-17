@@ -5,7 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/load-balancer-name: backend-lb
+    alb.ingress.kubernetes.io/load-balancer-name: test-lb
     alb.ingress.kubernetes.io/target-type: instance
 spec:
   rules:
