@@ -11,7 +11,8 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   #ECR_REGISTRY: 357535904450.dkr.ecr.ap-northeast-2.amazonaws.com # ecr_registry 주소
-  ECR_REPOSITORY: ${{ github.event.repository.name  }} # owner  없이 # ${{ github.repository }} # repo 주소 전체
+  #ECR_REPOSITORY: ${{ github.event.repository.name  }} # owner  없이 # ${{ github.repository }} # repo 주소 전체
+  EKS_CLUSTER_NAME: MVP-EKS-CLUSTER
 
 jobs:
   build:
