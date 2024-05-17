@@ -11,4 +11,4 @@ spec:
     name: http
   selector:	
     app: backend
-  type: ClusterIP
+  type: LoadBalancer
