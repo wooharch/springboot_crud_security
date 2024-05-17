@@ -99,8 +99,9 @@ jobs:
      #   env:
      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
      #     IMAGE_TAG: ${{ steps.commit.outputs.short }}
+     #           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" aws/deployment.yaml && \
         run: |
-          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" aws/deployment.yaml && \
+          sed -i.bak "s|DOCKER_IMAGE|${{ steps.meta.outputs.tags }}|g" aws/deployment.yaml && \
           kubectl apply -f aws/deployment.yaml
           kubectl apply -f aws/service.yaml
           kubectl apply -f aws/ingress.yaml
