@@ -1,0 +1,93 @@
+name: Deploy ECR with Gitops-Kustomize
+
+on:      
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Docker TAG"
+        required: true
+        default: "master"
+
+env:
+  AWS_REGION: ap-northeast-2
+  #ECR_REGISTRY: 357535904450.dkr.ecr.ap-northeast-2.amazonaws.com # ecr_registry 주소
+  ECR_REPOSITORY: ${{ github.event.repository.name  }} # owner  없이 # ${{ github.repository }} # repo 주소 전체
+  GIT_OPS_NAME: springboot_crud_security_gitops
+  OPS_DIR: charts/backend/
+
+  
+jobs:
+  ecr-build-push-and-deploy:
+    name: ecr-build-push-and-deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+ 
+    - name: Set Timezone
+      uses: szenius/set-timezone@v2.0
+      with:
+        # Desired timezone for Linux
+        timezoneLinux: Asia/Seoul
+        
+    - name: set env  # TAG 를 현재 시간으로 설정
+      run: echo "NOW=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+    - name: Docker Build and ECR Push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        platforms: linux/amd64
+        push: true
+        tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.NOW }}
+
+
+    # kustomize 명령을 가져온다.
+    - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@v1
+
+    - name: Checkout kustomize repository
+      uses: actions/checkout@v2
+      with:
+        # kubernetes 설정정보 저장소
+        repository: kt-cloudnative/${{ env.GIT_OPS_NAME }}
+        ref: master
+        # 다른 저장소에 push 하려면 Personal Access Token이 필요.
+        token: ${{ secrets.ACTION_TOKEN }} # ${{ secrets.GITHUB_TOKEN }} 
+        path: ${{ env.GIT_OPS_NAME }}
+        
+    # 새 이미지 버전으로 파일 수정
+    - name: Update Kubernetes resources
+      run: |
+        pwd
+        cd ${{ env.GIT_OPS_NAME }}/${{ env.OPS_DIR }}
+        kustomize edit set image ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.NOW }}
+        cat kustomization.yaml
+#echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}
+#        echo \${{ steps.login-ecr.outputs.registry }}/\${{ env.ECR_REPOSITORY }}:\${{ github.event.inputs.tags }}
+
+    # 수정된 파일 commit & push
+    - name: Commit minifest files
+      run: |
+        cd ${{ env.GIT_OPS_NAME }}/${{ env.OPS_DIR }}
+        git checkout HEAD
+        git config --global user.email "shclub@github.com"
+        git config --global user.name "shclub"
+        git commit -am 'update image tag  ${{ env.NOW }} from Github Action'
+        cat kustomization.yaml
+        git push origin HEAD
