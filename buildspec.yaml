@@ -1,0 +1,31 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+#      - echo $AWS_DEFAULT_REGION
+#      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+#      - $(aws ecr get-login-password | docker login --username AWS --password-stdin 381491860602.dkr.ecr.ap-northeast-2.amazonaws.com/mvp) 
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 381491860602.dkr.ecr.ap-northeast-2.amazonaws.com
+      - REPOSITORY_URI=381491860602.dkr.ecr.ap-northeast-2.amazonaws.com/backend
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - IMAGE_TAG=v1
+      - IMAGE_REPO_NAME=backend
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+	  - docker push $REPOSITORY_URI:$IMAGE_TAG
+#      - docker build -t $REPOSITORY_URI:latest .
+#      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+	  - DATE=`date`
+      - echo Build completed on $DATE
+      - sed -i.bak 's#AWS_ECR_URI#'"$AWS_ECR_URI"'#' ./deployment.yaml
+      - sed -i.bak 's#DATE_STRING#'"$DATE"'#' ./deployment.yaml
+      - kubectl apply -f ./aws/deployment.yaml
+      - kubectl apply -f ./aws/service.yaml
+      - kubectl apply -f ./aws/ingress.yaml
