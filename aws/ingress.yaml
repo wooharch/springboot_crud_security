@@ -4,8 +4,9 @@ metadata:
   name: backend-ingress
   annotations:
     kubernetes.io/ingress.class: "alb"
-    alb.ingress.kubernetes.io/scheme: internal
+#    alb.ingress.kubernetes.io/scheme: internal
 #    alb.ingress.kubernetes.io/load-balancer-name: internal-k8s-backend-ingress-edu.ap-northeast-2.elb.amazonaws.com
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
 spec:
   ingressClassName: alb
