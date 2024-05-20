@@ -23,7 +23,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - IMAGE_TAG=$(date -d '+9 hour' +%Y%m%d%H%m%S) #KST # UTC $(date +%Y%m%d%H%M%S)
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)  # $(date -d '+9 hour' +%Y%m%d%H%m%S) #KST 
       - echo Building the Docker image Tag  $IMAGE_TAG
       - IMAGE_REPO_NAME=backend
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
