@@ -64,5 +64,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           tags: ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
