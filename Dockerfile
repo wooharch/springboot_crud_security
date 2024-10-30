@@ -52,8 +52,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENV SPRING_PROFILES_ACTIVE dev
 
-ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:MaxRAMPercentage=80.0 -XX:MaxRAMFraction=1 -XshowSettings:vm"
-ENV JAVA_OPTS="${JAVA_OPTS} -XX:+UseG1GC -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark -XX:InitiatingHeapOccupancyPercent=35 -XX:G1ConcRefinementThreads=20"
+# ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:MaxRAMPercentage=80.0 -XX:MaxRAMFraction=1 -XshowSettings:vm"
+# ENV JAVA_OPTS="${JAVA_OPTS} -XX:+UseG1GC -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark -XX:InitiatingHeapOccupancyPercent=35 -XX:G1ConcRefinementThreads=20"
 ### Azure Opentelemerty ###
 ENV JAVA_OPTS="${JAVA_OPTS} -javaagent:applicationinsights-agent-3.5.4.jar"
 ### Azure Opentelemerty ###
